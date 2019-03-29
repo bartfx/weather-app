@@ -1,0 +1,162 @@
+<html>
+  <head>
+    <title>Weather App</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="css/weather-icons.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+
+<script
+  src="http://code.jquery.com/jquery-1.9.1.min.js"
+  integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ="
+  crossorigin="anonymous"></script>
+  <script type="text/javascript" src="app.js"></script>
+
+
+
+
+ 
+</head>
+<body>
+    
+        <div id="address"></div>
+
+
+    <hr>
+    <input type="text" id="myText" placeholder="Lok..." value=""/> <button onclick="dodaj();">Szukaj</button>
+ 
+
+    <div id="container">
+           
+            </div>  
+            
+
+
+
+
+<hr/>
+
+
+<script>
+
+
+      // funkcja konwertujaca K na C
+      function calculate(kelvin) {
+        // zaokraglaj wynik w gore
+        return Math.ceil(kelvin - 272.15);
+      }
+
+      function pogoda(value) {
+        // tworzenie elementu listy
+        var li = document.createElement('li');
+        // uzupełnienie nowo utworzonego elementu trescia
+        li.innerText = value;
+        // wybieram liste z drzewa DOM
+        var ul = document.querySelector('ul');
+        // dodaj nowo utworzony element do listy
+        ul.appendChild(li);
+      }
+
+
+      function addDiv(value) {
+
+var div = document.createElement('div');
+div.innerText = value;
+container.appendChild(div);
+   }
+
+
+      function addElement(value) {
+
+         // tworzenie elementu listy
+         var li = document.createElement('li');
+        // uzupełnienie nowo utworzonego elementu trescia
+        li.innerText = value;
+        // wybieram liste z drzewa DOM
+        var ul = document.querySelector('ul');
+        // dodaj nowo utworzony element do listy
+        ul.appendChild(li);
+      }
+
+
+var i = 0;
+
+function icon() {
+        // tworzenie elementu listy
+        var li = document.createElement('li');
+        // uzupełnienie nowo utworzonego elementu trescia
+        li.innerText = value;
+        // wybieram liste z drzewa DOM
+        var ul = document.querySelector('ul');
+        // dodaj nowo utworzony element do listy
+        ul.appendChild(li);
+
+
+
+        function myFunction(src) {
+  var x = document.createElement("IMG");
+  x.setAttribute("src", "humidity.png");
+  x.setAttribute("width", "304");
+  x.setAttribute("height", "228");
+  document.body.appendChild(x);
+}
+}
+
+
+
+      // wybieram przycisk z drzewa DOM
+      var button = document.querySelector('button');
+      // nasluchiwanie na klikniecie w button
+      function dodaj() {
+        // wybieram input z drzewa DOM
+        var input = document.querySelector('input');
+        // sprawdzam czy input nie ma pustej wartosci
+        if (input.value.trim() !== '') {
+          // pobranie danych z serwera (open weather map)
+          fetch(
+            'https://api.openweathermap.org/data/2.5/forecast?q=' +
+              input.value +
+              '&appid=ae76d0efed32d9f29c4d54a5738b80ca&lang={pl}'
+          )
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(jsonData) {
+              // sprawdzam czy istnieja dane do wyswietlenia
+              if (jsonData.cod === '200') {
+                addDiv('Pogoda dla:' + input.value);
+                jsonData.list.forEach(function(item) {
+                    addElement(item.dt_txt + ': ' + "\n" + calculate(item.main.temp) + '℃' + "\n" +  item.weather[0].description + "\n" + 'http://openweathermap.org/img/w/'+item.weather[0].icon+'.png');
+                 
+                  
+            
+                  i++;
+                });
+              } else {
+                // dane nie istnieja
+                alert('Nie ma takiego miasta');
+              }
+            })
+            .catch(function(error) {
+              // tutaj osblugujemy bledy popelnione w wywolaniu zwrotnym powyzej
+              // czyli w funkcji .then(...)
+              console.warn('Nasz error:', error);
+            });
+        }
+      };
+
+      function myFunction(src) {
+  var x = document.createElement("IMG");
+  x.setAttribute("src", "humidity.png");
+  x.setAttribute("width", "304");
+  x.setAttribute("height", "228");
+  document.body.appendChild(x);
+}
+
+
+    </script>
+
+<ul></ul>
+
+  </body>
+</html>
